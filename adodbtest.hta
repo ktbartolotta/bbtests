@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="ADODB.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            var list = adodb('Driver=SQLite3 ODBC Driver;Database=bb.db;')
+                .execute('select * from bbtest');
+            var pList = []
+            for (var i = 0; i < list.length; i++) {
+                pList.push(list[i].part1 + ' ' + list[i].part2);
+            }
+            alert(pList);
+        </script>
+
+    </body>
+</html>
