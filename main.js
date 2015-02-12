@@ -1,10 +1,4 @@
 (function (window, $, db) {
-    //bbdbtest("test-div").html("this is another test div!");
-    //bbdbtest("test-div2").html("this is, yet, another test div!");
-
-    //Backbone.sync = function (method, model, success, error) {
-    //    success();
-    //};
 
     var 
         document = window.document,
@@ -19,11 +13,17 @@
 
             sync: function(method, model, options) {
                 if (method === 'create') {
-                    adodb('Driver=SQLite3 ODBC Driver;Database=bb.db;')
+                    db('Driver=SQLite3 ODBC Driver;Database=bb.db;')
                         .execute(
                             "insert into bbtest(part1, part2) values('"
                             + this.get("part1") + "','" + this.get('part2')
                             + "')");
+                }
+                else if (method === 'delete') {
+                    alert('some stuff');
+                    db('Driver=SQLite3 ODBC Driver;Database=bb.db;')
+                        .execute("delete from bbtest "
+                            + "where id = " + this.id);
                 }
             }
         }),
@@ -34,7 +34,7 @@
             model: Item,
 
             fetch: function () {
-                this.set(adodb('Driver=SQLite3 ODBC Driver;Database=bb.db;')
+                this.set(db('Driver=SQLite3 ODBC Driver;Database=bb.db;')
                     .execute('select * from bbtest'));
             }
         }),
@@ -92,8 +92,7 @@
             el: $("#test-div2"),
 
             events: {
-                "click button#add": "addItem",
-                "click button#refresh": "render"
+                "click button#add": "addItem"
             },
 
             initialize: function () {
@@ -112,8 +111,7 @@
 
                 var self = this;
                 $(this.el).html("");
-                $(this.el).append("<button id='add'>Add list item</button>"
-                    + "<button id='refresh'>refresh list</button>");
+                $(this.el).append("<button id='add'>Add item</button>");
                 $(this.el).append("<ul></ul>");
                 this.collection.fetch();
                 //_(this.collection.models).each(function (item) {
